@@ -135,11 +135,19 @@ function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(
 
 function getTemplate(placeholder) {
   var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  var selectedId = arguments.length > 2 ? arguments[2] : undefined;
   var text = placeholder !== null && placeholder !== void 0 ? placeholder : '';
   var items = data.map(function (item) {
-    return "<li class=\"select__item\" data-type=\"item\" data-id=\"".concat(item.id, "\">").concat(item.value, "</li>");
+    var cls = '';
+
+    if (item.id === selectedId) {
+      text = item.value;
+      cls = 'selected';
+    }
+
+    return "<li class=\"select__item ".concat(cls, "\" data-type=\"item\" data-id=\"").concat(item.id, "\">").concat(item.value, "</li>");
   });
-  return "\n        <div class=\"select__input\" data-type=\"input\">\n            <span data-type=\"value\">".concat(text, "</span>\n            <i data-type=\"arrow\" class=\"fas fa-chevron-down\"></i>\n        </div>\n        <div class=\"select__dropdawn\">\n            <ul class=\"select__list\">\n                ").concat(items.join(''), "\n            </ul>\n        </div>\n    ");
+  return "\n        <div class=\"select__overlay\" data-type=\"overlay\"></div>\n        <div class=\"select__input\" data-type=\"input\">\n            <span data-type=\"value\">".concat(text, "</span>\n            <i data-type=\"arrow\" class=\"fas fa-chevron-down\"></i>\n        </div>\n        <div class=\"select__dropdawn\">\n            <ul class=\"select__list\">\n                ").concat(items.join(''), "\n            </ul>\n        </div>\n    ");
 }
 
 var _render = /*#__PURE__*/new WeakSet();
@@ -156,7 +164,7 @@ var Select = /*#__PURE__*/function () {
 
     this.$el = document.querySelector(selector);
     this.options = options;
-    this.selectedId = null;
+    this.selectedId = options.selectedId;
 
     _classPrivateMethodGet(this, _render, _render2).call(this);
 
@@ -173,6 +181,8 @@ var Select = /*#__PURE__*/function () {
       } else if (type === 'item') {
         var id = e.target.dataset.id;
         this.select(id);
+      } else if (type === 'overlay') {
+        this.close();
       }
     }
   }, {
@@ -184,7 +194,7 @@ var Select = /*#__PURE__*/function () {
       this.$el.querySelectorAll("[data-type=\"item\"]").forEach(function (item) {
         return item.classList.remove('selected');
       });
-      this.$el.querySelector("[data-id=\"".concat(id, "\"]")).classList.add('selected');
+      this.$el.querySelector("[data-id=\"".concat(this.selectedId, "\"]")).classList.add('selected');
     }
   }, {
     key: "current",
@@ -219,6 +229,12 @@ var Select = /*#__PURE__*/function () {
       this.$arrow.classList.remove('fa-chevron-up');
       this.$arrow.classList.add('fa-chevron-down');
     }
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.$el.removeEventListener('click', this.onClickHandler);
+      this.$el.remove();
+    }
   }]);
 
   return Select;
@@ -230,7 +246,7 @@ function _render2() {
   var _this$options = this.options,
       data = _this$options.data,
       placeholder = _this$options.placeholder;
-  this.$el.innerHTML = getTemplate(placeholder, data);
+  this.$el.innerHTML = getTemplate(placeholder, data, this.selectedId);
 }
 
 function _listen2() {
@@ -320,6 +336,7 @@ require("./select/styles.scss");
 
 var select = new _select.Select('#select', {
   placeholder: 'Placeholder by default',
+  selectedId: '4',
   data: [{
     id: '1',
     value: 'React'
@@ -369,7 +386,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60719" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57118" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

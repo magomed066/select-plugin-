@@ -1,11 +1,19 @@
-function getTemplate(placeholder, data = []) {
+function getTemplate(placeholder, data = [], selectedId) {
 	let text = placeholder ?? ''
 
 	const items = data.map((item) => {
-		return `<li class="select__item" data-type="item" data-id="${item.id}">${item.value}</li>`
+		let cls = ''
+
+		if (item.id === selectedId) {
+			text = item.value
+			cls = 'selected'
+		}
+
+		return `<li class="select__item ${cls}" data-type="item" data-id="${item.id}">${item.value}</li>`
 	})
 
 	return `
+        <div class="select__overlay" data-type="overlay"></div>
         <div class="select__input" data-type="input">
             <span data-type="value">${text}</span>
             <i data-type="arrow" class="fas fa-chevron-down"></i>
@@ -22,7 +30,7 @@ export class Select {
 	constructor(selector, options) {
 		this.$el = document.querySelector(selector)
 		this.options = options
-		this.selectedId = null
+		this.selectedId = options.selectedId
 
 		this.#render()
 		this.#listen()
@@ -31,7 +39,7 @@ export class Select {
 	#render() {
 		const { data, placeholder } = this.options
 
-		this.$el.innerHTML = getTemplate(placeholder, data)
+		this.$el.innerHTML = getTemplate(placeholder, data, this.selectedId)
 	}
 
 	#listen() {
@@ -50,6 +58,8 @@ export class Select {
 		} else if (type === 'item') {
 			const { id } = e.target.dataset
 			this.select(id)
+		} else if (type === 'overlay') {
+			this.close()
 		}
 	}
 
@@ -62,7 +72,9 @@ export class Select {
 			.querySelectorAll(`[data-type="item"]`)
 			.forEach((item) => item.classList.remove('selected'))
 
-		this.$el.querySelector(`[data-id="${id}"]`).classList.add('selected')
+		this.$el
+			.querySelector(`[data-id="${this.selectedId}"]`)
+			.classList.add('selected')
 	}
 
 	get current() {
@@ -88,5 +100,10 @@ export class Select {
 		this.$el.classList.remove('open')
 		this.$arrow.classList.remove('fa-chevron-up')
 		this.$arrow.classList.add('fa-chevron-down')
+	}
+
+	destroy() {
+		this.$el.removeEventListener('click', this.onClickHandler)
+		this.$el.remove()
 	}
 }

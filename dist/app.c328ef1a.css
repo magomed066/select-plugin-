@@ -16,6 +16,10 @@ body {
   border: 1px solid #cecece;
   border-radius: 5px;
   position: relative;
+  z-index: 100;
+}
+.select.open .select__overlay {
+  display: block;
 }
 .select.open .select {
   border-bottom: none;
@@ -60,6 +64,16 @@ body {
 }
 .select__item:hover {
   background-color: lemonchiffon;
+}
+.select__overlay {
+  display: none;
+  background-color: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
 }
 
 ::-webkit-scrollbar {
