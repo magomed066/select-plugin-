@@ -55,6 +55,9 @@ body {
   transition: 0.1s all ease-out;
   cursor: pointer;
 }
+.select__item.selected {
+  background-color: bisque;
+}
 .select__item:hover {
   background-color: lemonchiffon;
 }

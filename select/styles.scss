@@ -66,11 +66,17 @@ body {
         transition: .1s all ease-out;
         cursor: pointer;
 
+        &.selected {
+            background-color: bisque;
+        }
+
         &:hover {
             background-color: lemonchiffon;
         }
     }
 }
+
+
 
 
 ::-webkit-scrollbar {
