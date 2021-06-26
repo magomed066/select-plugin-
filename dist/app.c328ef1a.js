@@ -127,11 +127,80 @@ exports.Select = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Select = function Select(selector, options) {
-  _classCallCheck(this, Select);
-};
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
+
+function getTemplate() {
+  return "\n        <div class=\"select__input\" data-type=\"input\">\n            <span>Select something</span>\n            <i class=\"fas fa-chevron-down\"></i>\n        </div>\n        <div class=\"select__dropdawn\">\n            <ul class=\"select__list\">\n                <li class=\"select__item\">123</li>\n                <li class=\"select__item\">123</li>\n                <li class=\"select__item\">123</li>\n                <li class=\"select__item\">123</li>\n                <li class=\"select__item\">123</li>\n                <li class=\"select__item\">123</li>\n                <li class=\"select__item\">123</li>\n            </ul>\n        </div>\n    ";
+}
+
+var _render = /*#__PURE__*/new WeakSet();
+
+var _listen = /*#__PURE__*/new WeakSet();
+
+var Select = /*#__PURE__*/function () {
+  function Select(selector, options) {
+    _classCallCheck(this, Select);
+
+    _listen.add(this);
+
+    _render.add(this);
+
+    this.$el = document.querySelector(selector);
+    this.options = options;
+
+    _classPrivateMethodGet(this, _render, _render2).call(this);
+
+    _classPrivateMethodGet(this, _listen, _listen2).call(this);
+  }
+
+  _createClass(Select, [{
+    key: "onClickHandler",
+    value: function onClickHandler(e) {
+      var type = e.target.dataset.type;
+
+      if (type === 'input') {
+        this.toggleClass();
+      }
+    }
+  }, {
+    key: "isOpen",
+    get: function get() {
+      return this.$el.classList.contains('open');
+    }
+  }, {
+    key: "toggleClass",
+    value: function toggleClass() {
+      this.isOpen ? this.close() : this.open();
+    }
+  }, {
+    key: "open",
+    value: function open() {
+      this.$el.classList.add('open');
+    }
+  }, {
+    key: "close",
+    value: function close() {
+      this.$el.classList.remove('open');
+    }
+  }]);
+
+  return Select;
+}();
 
 exports.Select = Select;
+
+function _render2() {
+  this.$el.innerHTML = getTemplate();
+}
+
+function _listen2() {
+  this.onClickHandler = this.onClickHandler.bind(this);
+  this.$el.addEventListener('click', this.onClickHandler);
+}
 },{}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
@@ -212,6 +281,7 @@ var _select = require("./select/select");
 require("./select/styles.scss");
 
 var select = new _select.Select('#select', {});
+window.s = select;
 },{"./select/select":"select/select.js","./select/styles.scss":"select/styles.scss"}],"../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

@@ -21,8 +21,7 @@ body {
   border-bottom: none;
 }
 .select.open .select__dropdawn {
-  opacity: 1;
-  transform: translateY(0);
+  display: block;
 }
 .select__input {
   height: 100%;
@@ -33,9 +32,7 @@ body {
   cursor: pointer;
 }
 .select__dropdawn {
-  transition: 0.3s opacity ease;
-  opacity: 0;
-  transform: translateY(-40px);
+  display: none;
   max-height: 240px;
   position: absolute;
   top: 50px;

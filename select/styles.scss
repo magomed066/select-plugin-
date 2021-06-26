@@ -27,9 +27,7 @@ body {
         }
 
         .select__dropdawn {
-            // display: block;
-            opacity: 1;
-            transform: translateY(0);
+            display: block;
         }
     }
 
@@ -43,9 +41,7 @@ body {
     }
 
     &__dropdawn{
-        transition: .3s opacity ease;
-        opacity: 0;
-        transform: translateY(-40px);
+        display: none;
         max-height: 240px;
         position: absolute;
         top: $height;
